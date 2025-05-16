@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Raxx Variable Shift Crypto</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background:#222; color:#eee; text-align:center; }
+  textarea { width: 90%; max-width: 600px; height: 100px; margin-bottom: 10px; font-size: 1.1rem; border-radius:8px; }
+  button { margin: 5px; padding: 10px 20px; font-size: 1.2rem; border:none; border-radius:8px; cursor:pointer; background:#f07c00; color:#121212; }
+  button:hover { background:#d66300; }
+  #result { margin-top: 15px; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap;}
+</style>
+</head>
+<body>
+
+<h1>Raxx Variable Shift Crypto</h1>
+
+<textarea id="inputText" placeholder="Ketik pesanmu di sini..."></textarea><br />
+
+<button onclick="encrypt()">Enkripsi</button>
+<button onclick="decrypt()">Dekripsi</button>
+
+<div id="result"></div>
+
+<script>
+  const shifts = [20, 5, 11]; // pola shift per kata
+
+  function shiftChar(c, amount) {
+    const a = 'a'.charCodeAt(0);
+    const A = 'A'.charCodeAt(0);
+
+    if (c >= 'a' && c <= 'z') {
+      return String.fromCharCode(((c.charCodeAt(0) - a + amount + 26) % 26) + a);
+    }
+    if (c >= 'A' && c <= 'Z') {
+      return String.fromCharCode(((c.charCodeAt(0) - A + amount + 26) % 26) + A);
+    }
+    return c;
+  }
+
+  function encrypt() {
+    const input = document.getElementById('inputText').value;
+    const words = input.split(' ');
+    let result = [];
+
+    for (let i = 0; i < words.length; i++) {
+      let shiftedWord = '';
+      let shiftAmount = shifts[i % shifts.length];
+      for (let ch of words[i]) {
+        shiftedWord += shiftChar(ch, shiftAmount);
+      }
+      result.push(shiftedWord);
+    }
+
+    document.getElementById('result').innerText = result.join(' ');
+  }
+
+  function decrypt() {
+    const input = document.getElementById('inputText').value;
+    const words = input.split(' ');
+    let result = [];
+
+    for (let i = 0; i < words.length; i++) {
+      let shiftedWord = '';
+      let shiftAmount = shifts[i % shifts.length];
+      for (let ch of words[i]) {
+        shiftedWord += shiftChar(ch, -shiftAmount);
+      }
+      result.push(shiftedWord);
+    }
+
+    document.getElementById('result').innerText = result.join(' ');
+  }
+</script>
+
+</body>
+</html>
